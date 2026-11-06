@@ -1,0 +1,51 @@
+html {
+    cursor: url('assets/normal_pink.gif') 8 8, auto;
+}
+body {
+    margin: 0;
+    font-family: 'Pixelify Sans';
+    background: #c5def0;
+    background: linear-gradient(90deg, rgba(197, 222, 240, 1) 0%, rgba(184, 240, 255, 1) 50%, rgba(220, 243, 252, 1) 100%);
+}
+a, button {
+    cursor: url('assets/link_pink.gif') 16 16, pointer;
+}
+
+.nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 70px;
+    color: white;
+    background-color: rgb(245, 164, 179);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-header ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+}
+.nav-header li {
+    list-style: none;
+}
+
+.nav-header a {
+    color: white;
+    font-size: clamp(1rem, 2vw, 1.50rem);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.nav-header a:hover {
+    color: #c5def0; /* matches the body background */
+}

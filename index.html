@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href='https://fonts.googleapis.com/css?family=Pixelify Sans' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Coral+Pixels&family=Geist+Pixel&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/icon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
@@ -18,17 +19,105 @@
             <li><a href="pattern_generator.html">pattern generator</a></li>
         </ul>
     </header>
-    <div id="container">
-        <div class="title-bar">
-            <span class="title-bar-text">introduction.exe</span>
-            <div class="title-bar-controls" aria-hidden="true">
-                <span class="title-btn minimize"></span>
-                <span class="title-btn maximize"></span>
-                <span class="title-btn close">x</span>
+
+    <div class="page-layout">
+
+        <div id="container">
+            <div class="title-bar">
+                <span class="title-bar-text">introduction.exe</span>
+                <div class="title-bar-controls" aria-hidden="true">
+                    <span class="title-btn minimize"></span>
+                    <span class="title-btn maximize"></span>
+                    <span class="title-btn close">x</span>
+                </div>
+            </div>
+            <div id="home-content">
+                <div class="marquee-container">
+                    <div class="marquee-content">
+                        welcome! this is a project for mat112, math in the modern world!
+                    </div>
+                </div>
+                <div class="intro-panel">
+                    <div class="intro-main-image">
+                        <img src="assets/intro-main-image.jpg" alt="main image">
+                    </div>
+                    <div class="intro-right-panels">
+                        <div class="intro-text-panel">
+                            <p>
+                                Mathematics is not only about numbers and solving equations but also about recognizing patterns that can be found in our everyday surroundings. 
+                                Patterns appear in different forms, like nature, buildings and architecture. 
+                                Some of these patterns often follow mathematical rules involving repetition, symmetry, and geometric transformations. 
+                                By studying mathematics as a science of patterns, we can better understand how mathematical concepts are present in the world around us. 
+                                A website may make this idea easier to visualize and explore.
+                            </p>
+                            <p>
+                                As such, Patterns in the Modern World aims to create an interactive site that showcases different mathematical patterns found in various 
+                                places and everyday surroundings. In the <a href="gallery.html">photo gallery</a>, there are original photographs taken by contributors in 
+                                different locations, showcasing patterns found in our surroundings. Each photograph will have a short description explaining the 
+                                mathematical concepts and geometric transformations present, such as translation, reflection, rotation, and dilation. 
+                                Aside from the gallery, there is also the <a href="pattern_generator.html">basic pattern generator</a> that lets users apply various geometric transformations to 
+                                simple shapes to create their own patterns.
+                            </p>
+                        </div>
+                        <div class="intro-profiles">
+                            <div class="intro-profile-img">
+                                <img src="assets/profile-1.png" alt="profile image 1">
+                            </div>
+                            <div class="intro-profile-img">
+                                <img src="assets/profile-2.png" alt="profile image 2">
+                            </div>
+                            <div class="intro-profile-img">
+                                <img src="assets/profile-3.png" alt="profile image 3">
+                            </div>
+                            <div class="intro-profile-img">
+                                <img src="assets/profile-4.png" alt="profile image 4">
+                            </div>
+                            <div class="intro-profile-img">
+                                <img src="assets/profile-5.png" alt="profile image 5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="home-content"></div>
+
+        <aside class="sidebar-window">
+            <div class="title-bar">
+                <span class="title-bar-text">sidebar.exe</span>
+                <div class="title-bar-controls" aria-hidden="true">
+                    <span class="title-btn minimize"></span>
+                    <span class="title-btn maximize"></span>
+                    <span class="title-btn close">x</span>
+                </div>
+            </div>
+            <div class="sidebar-body">
+
+                <div class="sidebar-clock">
+                    <div id="clock-time">00:00:00</div>
+                    <div id="clock-date">&nbsp;</div>
+                </div>
+
+                <div class="sidebar-featured">
+                    <img src="assets/featured-pattern.jpg" alt="featured pattern">
+                    <span class="sidebar-featured-caption">featured pattern desc</span>
+                </div>
+
+                <div class="sidebar-credits">
+                    <h2>credits</h2>
+                    <ul>
+                        <li>Facivon: <a href="https://sadthemes.tumblr.com/smolpxl">SMALL PIXELS on Tumblr</a></li>
+                        <li>Cursor: <a href="https://9ryuq.itch.io/rottencursor-pink">rotten angel cursor pack on itch.io</a></li>
+                        <li>Sparkles: <a href="https://webdesign.tutsplus.com/javascript-sparkle-cursor--cms-109158t">How to create a custom JavaScript sparkle cursor by Esther Vaati (modified)</a></li>
+                        <li>Fonts: Pixelify Sans, Geist Pixel (Google Fonts)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </aside>
+
     </div>
+
     <script src="cursor.js"></script>
+    <script src="clock.js"></script>
 </body>
 </html>

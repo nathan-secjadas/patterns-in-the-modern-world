@@ -7,6 +7,7 @@
     --deep-pink: rgb(255, 133, 154);
     --link-hover: #d1ebff;
     --baby-blue: #b4deff;
+    --off-white: #f5f5f5;
     --font: 'Pixelify Sans', monospace;
 }
 
@@ -118,7 +119,7 @@ a, button {
     height: 590px;
     margin: 0 5px 5px;
     padding: 10px;
-    background: white;
+    background: var(--off-white);
     overflow: auto;
 }
 

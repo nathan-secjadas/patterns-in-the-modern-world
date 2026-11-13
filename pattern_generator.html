@@ -6,6 +6,7 @@
     <link rel="icon" href="assets/icon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pattern_generator.css">
     <title>Patterns in the Modern World</title>
 </head>
 <body>
@@ -18,6 +19,212 @@
             <li><a href="pattern_generator.html">pattern generator</a></li>
         </ul>
     </header>
+
+    <div class="page-layout">
+        <div id="container">
+            <div class="title-bar">
+                <span class="title-bar-text">pattern_generator.exe</span>
+                <div class="title-bar-controls" aria-hidden="true">
+                    <span class="title-btn minimize"></span>
+                    <span class="title-btn maximize"></span>
+                    <span class="title-btn close">x</span>
+                </div>
+            </div>
+
+            <div class="generator-toolbar" role="toolbar" aria-label="pattern generator toolbar">
+                <button type="button" id="tutorial-btn" class="toolbar-btn toolbar-primary">tutorial</button>
+                <span class="toolbar-divider" aria-hidden="true"></span>
+                <button type="button" class="toolbar-btn" data-panel="options" aria-expanded="true">hide options</button>
+                <button type="button" class="toolbar-btn" data-panel="templates" aria-expanded="true">hide templates</button>
+                <button type="button" class="toolbar-btn" data-panel="zoom" aria-expanded="true">hide zoom</button>
+                <button type="button" id="reset-all-btn" class="toolbar-btn toolbar-reset">reset all</button>
+            </div>
+
+            <div class="generator-body">
+                <!-- CONTROLS -->
+                <div class="generator-controls">
+
+                    <section class="gen-panel">
+                        <div class="gen-panel-head">
+                            <h2>1. shape</h2>
+                            <button type="button" class="panel-reset" data-reset="shape" aria-label="reset the shape options" title="reset the shape options">reset</button>
+                        </div>
+                        <label class="gen-field">shape
+                            <select id="shape-select">
+                                <option value="square">square</option>
+                                <option value="triangle">triangle</option>
+                                <option value="hexagon">hexagon</option>
+                                <option value="circle">circle</option>
+                            </select>
+                        </label>
+                        <label class="gen-field">size
+                            <input type="number" id="shape-size" value="60" min="5" max="400" step="any">
+                        </label>
+                        <label class="gen-field">start x
+                            <input type="number" id="shape-x" value="-250" step="any">
+                        </label>
+                        <label class="gen-field">start y
+                            <input type="number" id="shape-y" value="0" step="any">
+                        </label>
+                        <label class="gen-check">
+                            <input type="checkbox" id="show-marker"> show a direction dot
+                        </label>
+                        <label class="gen-check">
+                            <input type="checkbox" id="show-axes" checked> show background grid
+                        </label>
+                    </section>
+
+                    <section class="gen-panel">
+                        <div class="gen-panel-head">
+                            <h2>2. transformations</h2>
+                            <button type="button" class="panel-reset" data-reset="transformations" aria-label="clear the transformations" title="clear the transformations">reset</button>
+                        </div>
+                        <div class="gen-add-row">
+                            <select id="transform-select">
+                                <option value="translate">translation</option>
+                                <option value="reflect">reflection</option>
+                                <option value="rotate">rotation</option>
+                                <option value="dilate">dilation</option>
+                            </select>
+                            <button type="button" id="add-transform">add</button>
+                        </div>
+                        <p class="gen-hint">they run from top to bottom, each one building on the last. the pattern updates as you change things.</p>
+                        <div id="transform-list"></div>
+                    </section>
+
+                    <section class="gen-panel">
+                        <div class="gen-panel-head">
+                            <h2>3. repeat &amp; grid</h2>
+                            <button type="button" class="panel-reset" data-reset="grid" aria-label="reset the repeat and grid options" title="reset the repeat and grid options">reset</button>
+                        </div>
+                        <label class="gen-field">repeats
+                            <input type="number" id="repeat-count" value="12" min="1" max="500" step="1">
+                        </label>
+                        <p class="gen-hint">to make a grid, the finished row is copied downward.</p>
+                        <label class="gen-field">rows
+                            <input type="number" id="row-count" value="1" min="1" max="200" step="1">
+                        </label>
+                        <label class="gen-field">row offset x
+                            <input type="number" id="row-x" value="0" step="any">
+                        </label>
+                        <label class="gen-field">row offset y
+                            <input type="number" id="row-y" value="-60" step="any">
+                        </label>
+                        <label class="gen-field">odd-row offset x
+                            <input type="number" id="row-odd-x" value="0" step="any">
+                        </label>
+                    </section>
+
+                    <section class="gen-panel">
+                        <div class="gen-panel-head">
+                            <h2>4. colors</h2>
+                            <button type="button" class="panel-reset" data-reset="colors" aria-label="reset the colors" title="reset the colors">reset</button>
+                        </div>
+                        <div class="gen-add-row">
+                            <select id="palette-select" aria-label="color templates">
+                                <option value="">color templates...</option>
+                            </select>
+                        </div>
+                        <p id="palette-note" class="gen-hint" aria-live="polite"></p>
+                        <div id="color-list"></div>
+                        <div class="gen-buttons">
+                            <button type="button" id="add-color-btn">add color</button>
+                            <button type="button" id="remove-color-btn">remove color</button>
+                        </div>
+                        <label class="gen-field color-by-field">color by
+                            <select id="color-mode"></select>
+                        </label>
+                        <p id="color-mode-hint" class="gen-hint"></p>
+                    </section>
+
+                    <section class="gen-panel">
+                        <div class="gen-panel-head">
+                            <h2>5. save</h2>
+                            <button type="button" class="panel-reset" data-reset="output" aria-label="reset the saving option" title="reset the saving option">reset</button>
+                        </div>
+                        <label class="gen-check">
+                            <input type="checkbox" id="transparent-bg"> transparent background when saving
+                        </label>
+                        <div class="gen-buttons">
+                            <button type="button" id="save-image-btn">save image</button>
+                        </div>
+                        <p class="gen-hint">the whole pattern is saved, not just the part you can see.</p>
+                    </section>
+                </div>
+
+                <!-- CANVAS -->
+                <div class="generator-canvas-wrap">
+                    <canvas id="pattern-canvas" width="900" height="640"></canvas>
+                    <div class="canvas-side">
+                    <div class="canvas-controls">
+                        <button type="button" id="zoom-out-btn" aria-label="zoom out">-</button>
+                        <span id="zoom-label">100%</span>
+                        <button type="button" id="zoom-in-btn" aria-label="zoom in">+</button>
+                        <button type="button" id="reset-view-btn">reset view</button>
+                    </div>
+                    <div class="template-panel">
+                        <button type="button" id="template-toggle" class="template-toggle" aria-expanded="false" aria-controls="template-body">
+                            <span>templates</span>
+                            <span id="template-arrow" aria-hidden="true">+</span>
+                        </button>
+                        <div id="template-body" class="template-body" hidden>
+                            <p class="gen-hint">click one to fill in every option and draw it.</p>
+                            <div class="template-lists">
+                                <h3 class="template-heading">default</h3>
+                                <div id="template-list-default"></div>
+                                <h3 class="template-heading">yours</h3>
+                                <ul id="template-list-user" class="template-list"></ul>
+                                <p id="template-empty" class="gen-hint">nothing saved yet. set things up, then save them below.</p>
+                            </div>
+                            <div class="template-save">
+                                <label class="template-heading" for="template-name">save your current settings</label>
+                                <div class="gen-add-row">
+                                    <input type="text" id="template-name" maxlength="40" placeholder="template name">
+                                    <button type="button" id="save-template-btn">save</button>
+                                </div>
+                                <p id="template-note" class="gen-hint" aria-live="polite"></p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="canvas-footer">
+                        <span class="canvas-hint">drag to move around, scroll or pinch to zoom</span>
+                        <span id="gen-status" class="canvas-status" aria-live="polite"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tutorial-overlay" id="tutorial-overlay" hidden>
+        <div class="tutorial-window" role="dialog" aria-modal="true" aria-label="tutorial">
+            <div class="title-bar">
+                <span class="title-bar-text">tutorial.exe</span>
+                <div class="title-bar-controls">
+                    <span class="title-btn minimize" aria-hidden="true"></span>
+                    <span class="title-btn maximize" aria-hidden="true"></span>
+                    <button type="button" class="title-btn close" id="tutorial-close" aria-label="close tutorial">x</button>
+                </div>
+            </div>
+            <div class="tutorial-body">
+                <div class="tutorial-card" aria-live="polite">
+                    <p class="tutorial-count" id="tutorial-count"></p>
+                    <h2 id="tutorial-title"></h2>
+                    <p id="tutorial-text"></p>
+                    <p class="tutorial-tip" id="tutorial-tip"></p>
+                </div>
+                <div class="tutorial-footer">
+                    <div class="tutorial-dots" id="tutorial-dots" aria-hidden="true"></div>
+                    <div class="tutorial-nav">
+                        <button type="button" class="tutorial-btn" id="tutorial-back">back</button>
+                        <button type="button" class="tutorial-btn" id="tutorial-next">next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="cursor.js"></script>
+    <script src="pattern_generator.js"></script>
 </body>
 </html>

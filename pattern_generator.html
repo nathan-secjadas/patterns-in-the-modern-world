@@ -49,22 +49,39 @@
                             <h2>1. shape</h2>
                             <button type="button" class="panel-reset" data-reset="shape" aria-label="reset the shape options" title="reset the shape options">reset</button>
                         </div>
-                        <label class="gen-field">shape
-                            <select id="shape-select">
-                                <option value="square">square</option>
-                                <option value="triangle">triangle</option>
-                                <option value="hexagon">hexagon</option>
-                                <option value="circle">circle</option>
-                            </select>
+                        <div id="shape-list"></div>
+                        <div class="gen-buttons">
+                            <button type="button" id="add-shape-btn">add shape</button>
+                            <button type="button" id="remove-shape-btn">remove shape</button>
+                        </div>
+                        <label class="gen-field shape-by-field">shape by
+                            <select id="shape-mode"></select>
                         </label>
-                        <label class="gen-field">size
+                        <p id="shape-mode-hint" class="gen-hint"></p>
+                        <label class="gen-field" data-shapes="circle triangle square pentagon hexagon">size
                             <input type="number" id="shape-size" value="60" min="5" max="400" step="any">
                         </label>
+                        <label class="gen-field" data-shapes="rectangle oval" hidden>width
+                            <input type="number" id="shape-width" value="90" min="5" max="800" step="any">
+                        </label>
+                        <label class="gen-field" data-shapes="rectangle oval" hidden>height
+                            <input type="number" id="shape-height" value="50" min="5" max="800" step="any">
+                        </label>
+                        <label class="gen-field" data-shapes="rectangle" hidden>corner radius
+                            <input type="number" id="shape-corner" value="0" min="0" max="400" step="any">
+                        </label>
+                        <label class="gen-field" data-shapes="oval" hidden>tilt (degrees)
+                            <input type="number" id="shape-tilt" value="0" step="any">
+                        </label>
+                        <p class="gen-hint" data-shapes="rectangle oval" hidden>Rectangles and ovals use a width and a height in place of a single size. Corner radius rounds the corners of a rectangle; tilt rotates an oval counterclockwise about its own center.</p>
                         <label class="gen-field">start x
                             <input type="number" id="shape-x" value="-250" step="any">
                         </label>
                         <label class="gen-field">start y
                             <input type="number" id="shape-y" value="0" step="any">
+                        </label>
+                        <label class="gen-check">
+                            <input type="checkbox" id="show-border" checked> show shape borders
                         </label>
                         <label class="gen-check">
                             <input type="checkbox" id="show-marker"> show a direction dot
@@ -88,7 +105,7 @@
                             </select>
                             <button type="button" id="add-transform">add</button>
                         </div>
-                        <p class="gen-hint">they run from top to bottom, each one building on the last. the pattern updates as you change things.</p>
+                        <p class="gen-hint">Transformations are applied in order from top to bottom, each one acting on the result of the previous one.</p>
                         <div id="transform-list"></div>
                     </section>
 
@@ -100,7 +117,7 @@
                         <label class="gen-field">repeats
                             <input type="number" id="repeat-count" value="12" min="1" max="500" step="1">
                         </label>
-                        <p class="gen-hint">to make a grid, the finished row is copied downward.</p>
+                        <p class="gen-hint">To create a grid, the completed row is copied downward once per row.</p>
                         <label class="gen-field">rows
                             <input type="number" id="row-count" value="1" min="1" max="200" step="1">
                         </label>
@@ -124,6 +141,7 @@
                             <select id="palette-select" aria-label="color templates">
                                 <option value="">color templates...</option>
                             </select>
+                            <button type="button" id="apply-palette-btn" disabled>apply</button>
                         </div>
                         <p id="palette-note" class="gen-hint" aria-live="polite"></p>
                         <div id="color-list"></div>
@@ -142,14 +160,22 @@
                             <h2>5. save</h2>
                             <button type="button" class="panel-reset" data-reset="output" aria-label="reset the saving option" title="reset the saving option">reset</button>
                         </div>
+                        <label class="gen-field">background color
+                            <input type="color" id="save-bg-color" value="#ffffff">
+                        </label>
                         <label class="gen-check">
-                            <input type="checkbox" id="transparent-bg"> transparent background when saving
+                            <input type="checkbox" id="transparent-bg"> transparent background instead
                         </label>
                         <div class="gen-buttons">
                             <button type="button" id="save-image-btn">save image</button>
                         </div>
-                        <p class="gen-hint">the whole pattern is saved, not just the part you can see.</p>
+                        <p class="gen-hint">The background applies only to the saved image, not to the canvas. The entire pattern is saved, not only the visible area.</p>
                     </section>
+
+                    <div class="gen-actions">
+                        <button type="button" id="generate-btn" class="gen-primary">generate</button>
+                        <span id="pending-note" class="gen-pending" aria-live="polite"></span>
+                    </div>
                 </div>
 
                 <!-- CANVAS -->
@@ -168,14 +194,15 @@
                             <span id="template-arrow" aria-hidden="true">+</span>
                         </button>
                         <div id="template-body" class="template-body" hidden>
-                            <p class="gen-hint">click one to fill in every option and draw it.</p>
+                            <p class="gen-hint">Select a template, then press apply. This loads all of its settings and draws the pattern.</p>
                             <div class="template-lists">
                                 <h3 class="template-heading">default</h3>
                                 <div id="template-list-default"></div>
                                 <h3 class="template-heading">yours</h3>
                                 <ul id="template-list-user" class="template-list"></ul>
-                                <p id="template-empty" class="gen-hint">nothing saved yet. set things up, then save them below.</p>
+                                <p id="template-empty" class="gen-hint">No templates have been saved. Configure the options, then save them below.</p>
                             </div>
+                            <button type="button" id="apply-template-btn" disabled>apply</button>
                             <div class="template-save">
                                 <label class="template-heading" for="template-name">save your current settings</label>
                                 <div class="gen-add-row">
@@ -188,7 +215,7 @@
                     </div>
                     </div>
                     <div class="canvas-footer">
-                        <span class="canvas-hint">drag to move around, scroll or pinch to zoom</span>
+                        <span class="canvas-hint">Drag to pan. Scroll or pinch to zoom.</span>
                         <span id="gen-status" class="canvas-status" aria-live="polite"></span>
                     </div>
                 </div>

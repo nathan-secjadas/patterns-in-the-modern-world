@@ -18,7 +18,7 @@ body {
     background: var(--off-white);
 }
 
-/* the options column: pink, with each panel as a white card and a deep pink title strip */
+/* the options column: baby blue, with each panel as a white card and a deep pink title strip */
 .generator-controls {
     flex: 0 0 310px;
     box-sizing: border-box;
@@ -29,10 +29,11 @@ body {
     /* tall windows: as tall as the window allows; short windows: scrolls inside */
     max-height: max(460px, calc(100vh - 170px));
     overflow-y: auto;
-    background: var(--pink);
+    --baby-blue: #b4deff;
+    background: var(--baby-blue);
     border: 2px solid var(--deep-pink);
     border-radius: 10px;
-    scrollbar-color: var(--deep-pink) var(--pink);
+    scrollbar-color: var(--deep-pink) var(--baby-blue);
 }
 
 .gen-panel {
@@ -111,6 +112,10 @@ body {
     background: white;
 }
 
+.generator-body input[type="color"]:disabled {
+    opacity: 0.4;
+}
+
 .generator-body button {
     padding: 4px 12px;
     font-family: var(--font);
@@ -129,6 +134,10 @@ body {
     opacity: 0.4;
 }
 
+.generator-body .transform-card select {
+    width: 150px;
+}
+
 .gen-add-row {
     display: flex;
     gap: 8px;
@@ -142,8 +151,9 @@ body {
     min-width: 0;
 }
 
-/* the color-by menu has longer names than the other selects */
-.generator-body .color-by-field select {
+/* the color-by and shape-by menus have longer names than the other selects */
+.generator-body .color-by-field select,
+.generator-body .shape-by-field select {
     width: 160px;
 }
 
@@ -191,6 +201,100 @@ body {
     margin: 8px 0 4px;
     font-size: 0.75rem;
     color: #666;
+}
+
+/* fields and notes that only apply to some shapes */
+.gen-field[hidden],
+.gen-hint[hidden] {
+    display: none;
+}
+
+/* generate bar: a retro bevelled panel, like the buttons in the title bar.
+   it stays at the bottom of the options column while the panels scroll */
+.gen-actions {
+    position: sticky;
+    bottom: 0;
+    flex: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: var(--pink);
+    border: 2px solid;
+    border-color: white var(--deep-pink) var(--deep-pink) white;
+    border-radius: 0;
+    box-shadow: inset 1px 1px 0 var(--white-edge), inset -1px -1px 0 rgba(0, 0, 0, 0.15), 3px 3px 0 var(--deep-pink);
+}
+
+.generator-body .gen-actions .gen-primary {
+    flex: none;
+    padding: 4px 16px;
+    font-family: var(--font);
+    font-size: 1rem;
+    color: black;
+    background: var(--pink);
+    border: 2px solid;
+    border-color: white var(--deep-pink) var(--deep-pink) white;
+    border-radius: 0;
+    box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.2), inset 1px 1px 0 var(--white-edge);
+}
+
+.generator-body .gen-actions .gen-primary:hover:not(:disabled) {
+    background: var(--link-hover);
+}
+
+/* pressed: the bevel flips and the button sinks one pixel */
+.generator-body .gen-actions .gen-primary:active:not(:disabled) {
+    border-color: var(--deep-pink) white white var(--deep-pink);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.2);
+    padding: 5px 15px 3px 17px;
+}
+
+.generator-body .gen-actions .gen-primary:focus-visible {
+    outline: 2px dotted black;
+    outline-offset: -6px;
+}
+
+/* something has changed since the last drawing: the button blinks between two colors */
+.generator-body .gen-actions .gen-primary.is-pending {
+    color: white;
+    background: var(--deep-pink);
+    animation: gen-blink 1.2s steps(1, end) infinite;
+}
+
+.generator-body .gen-actions .gen-primary.is-pending:hover:not(:disabled) {
+    background: #ff6f8a;
+}
+
+/* status text sits in a sunken well */
+.gen-pending {
+    flex: 1;
+    min-width: 0;
+    min-height: 1.5em;
+    box-sizing: border-box;
+    padding: 2px 6px;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    color: black;
+    background: rgb(253, 223, 245);
+    border: 2px solid;
+    border-color: var(--deep-pink) white white var(--deep-pink);
+}
+
+@keyframes gen-blink {
+    0%   { background: var(--deep-pink); color: white; }
+    50%  { background: var(--pink); color: black; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .generator-body .gen-actions .gen-primary.is-pending {
+        animation: none;
+    }
+}
+
+#apply-template-btn {
+    width: 100%;
 }
 
 /* canvas */
@@ -601,7 +705,8 @@ body {
 
     /* buttons sit on deep pink here, so flip them to white */
     .generator-body .canvas-controls button,
-    .generator-body .template-body .gen-add-row button {
+    .generator-body .template-body .gen-add-row button,
+    .generator-body #apply-template-btn {
         color: var(--deep-pink);
         background: white;
         border-color: white;
@@ -635,6 +740,10 @@ body {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         align-items: start;
+    }
+
+    .gen-actions {
+        grid-column: 1 / -1;
     }
 
     .tutorial-card {

@@ -11,7 +11,7 @@
     <title>Patterns in the Modern World</title>
 </head>
 
-<body>
+<body class="no-scrollbar">
     <div class="cursor"></div>
     <header class="nav-header">
         <h1>patterns in the modern world</h1>
@@ -22,37 +22,98 @@
         </ul>
     </header>
     <script src="cursor.js"></script>
-</body>
-    <div class="gallery">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+    
+    <div class="page-layout">
+        <div id="container">
+            <div class="title-bar">
+                <span class="title-bar-text">gallery</span>
+                <div class="title-bar-controls" aria-hidden="true">
+                    <span class="title-btn minimize"></span>
+                    <span class="title-btn maximize"></span>
+                    <span class="title-btn close">x</span>
+                </div>
+            </div>
 
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+            <div class="gallery-filter">
+                Filter by:
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="translation">Translation</button>
+                <button class="filter-btn" data-filter="reflection">Reflection</button>
+                <button class="filter-btn" data-filter="rotation">Rotation</button>
+                <button class="filter-btn" data-filter="dilation">Dilation</button>
+            </div>
 
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+            <div class="gallery">
 
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
 
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
 
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
-        <img src="images/dummy_img.png">
+                <div class="gallery-item" data-category="rotation">
+                    <img src="images/dummy_img.png" alt="Rotation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="dilation">
+                    <img src="images/dummy_img.png" alt="Dilation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
+
+                <div class="gallery-item" data-category="rotation">
+                    <img src="images/dummy_img.png" alt="Rotation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Dilation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="reflection">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Translation pattern">
+                </div>
+
+                <div class="gallery-item" data-category="translation">
+                    <img src="images/dummy_img.png" alt="Reflection pattern">
+                </div>
+
+            </div>
+        </div>
     </div>
+
+    <script src="gallery.js"></script>
+</body>
 
 </html>

@@ -1,0 +1,17 @@
+.gallery {
+    padding: 5px 5px 5px 5px; 
+
+    display: grid;
+    grid-template-columns: 0.25fr 0.25fr 0.25fr 0.25fr;
+    column-gap: 5px;
+    row-gap: 5px;
+    align-items: center;
+ 
+    overflow: hidden;
+    }
+    
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+    }

@@ -88,6 +88,8 @@ a, button {
 
 .nav-header a.active {
     color: var(--deep-pink);
+    -webkit-text-stroke: 5px var(--off-white);
+    paint-order: stroke fill;
 }
 
 /* WINDOW FRAMES */

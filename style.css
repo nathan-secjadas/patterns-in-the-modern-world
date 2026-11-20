@@ -1,7 +1,7 @@
 /* BASE */
 :root {
     --pink: #ffc2cd;
-    --pink-glass: rgba(255, 194, 205, 0.8);
+    --pink-glass: rgba(255, 194, 205, 0.85);
     --white-edge: rgba(255, 255, 255, 0.9);
     --off-blue: rgb(211, 218, 253);
     --deep-pink: rgb(255, 133, 154);
@@ -28,8 +28,13 @@ html::-webkit-scrollbar {
 body {
     margin: 0;
     font-family: var(--font);
-    background: #c5def0; /* fallback */
-    background: linear-gradient(95deg, #c5def0 0%, #b8f0ff 50%, #dcf3fc 100%);
+    background-image: 
+        url('assets/calm-blue.PNG'),
+        linear-gradient(95deg, #c5def0 0%, #b8f0ff 50%, #dcf3fc 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
 }
 
 a, button {
@@ -90,6 +95,28 @@ a, button {
     color: var(--deep-pink);
     -webkit-text-stroke: 5px var(--off-white);
     paint-order: stroke fill;
+}
+
+/* SITE LOGO */
+.site-logo {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.site-logo a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.site-logo img {
+    display: block;
+    height: 55px;  
+    width: auto;  
+    position: relative;
+    left: -15px;   
 }
 
 /* WINDOW FRAMES */
@@ -309,6 +336,7 @@ a, button {
 #clock-time {
     color: var(--deep-pink);
     font-size: 2.2rem;
+    font-weight: 800;
     line-height: 1.1;
 }
 

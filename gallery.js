@@ -1,16 +1,17 @@
 
-// ==================================
-// GALLERY ELEMENTS
-// ==================================
-
 const filterButtons = document.querySelectorAll(".filter-btn");
 const galleryItems = document.querySelectorAll(".gallery-item");
 
+// IMAGE VIEWER ELEMENTS
 const imageViewer = document.getElementById("imageViewer");
+const viewerWindow = imageViewer.querySelector(".viewer-window");
+
 const selectedImage = document.getElementById("selectedImage");
+
 const imageTitle = document.getElementById("imageTitle");
 const imageDescription = document.getElementById("imageDescription");
 const imageCategory = document.getElementById("imageCategory");
+
 const imageCounter = document.getElementById("imageCounter");
 
 const closeViewer = document.getElementById("closeViewer");
@@ -18,305 +19,262 @@ const prevImage = document.getElementById("prevImage");
 const nextImage = document.getElementById("nextImage");
 
 let currentIndex = 0;
-let visibleItems = [];
+let lastFocusedElement = null;
 
 
-// ==================================
-// IMAGE CATEGORY AND TITLE DETECTION
-// ==================================
+// ========================================
+// GET ITEM CATEGORIES
+// ========================================
 
-function getImageInformation(img) {
+// Get all categories assigned to a gallery item
+function getItemCategories(item) {
 
-    // Get image filename without extension
-    const filename = decodeURIComponent(
-        img.getAttribute("src").split("/").pop().split("\\").pop()
-    );
+    // Supports multiple categories separated by spaces
+    // Also supports the old data-category attribute
+    const categories =
+        item.dataset.categories ||
+        item.dataset.category ||
+        "";
 
-    const name = filename.replace(/\.[^/.]+$/, "");
-
-    const lowerName = name.toLowerCase();
-
-    // Available transformations
-    const transformations = [
-        "translation",
-        "reflection",
-        "rotation",
-        "dilation"
-    ];
-
-    let detectedCategories = [];
-    let remainingName = lowerName;
-
-    // Detect transformation names at the beginning
-    while (remainingName.length > 0) {
-
-        const match = transformations.find(category =>
-            remainingName.startsWith(category)
-        );
-
-        if (!match) break;
-
-        detectedCategories.push(match);
-
-        remainingName = remainingName.substring(match.length);
-    }
-
-    // Fallback if no transformation is detected
-    if (detectedCategories.length === 0) {
-        detectedCategories.push("other");
-        remainingName = lowerName;
-    }
-
-    // Remove separators and unnecessary numbering
-    let location = name.substring(
-        lowerName.length - remainingName.length
-    );
-
-    location = location
-        .replace(/\.[^/.]+$/, "")
-        .replace(/\(\d+\)/g, "")
-        .replace(/[_-]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-
-    // Capitalize location name
-    location = location.replace(/\b\w/g, letter =>
-        letter.toUpperCase()
-    );
-
-    const categoryLabels = detectedCategories.map(category =>
-        category.charAt(0).toUpperCase() + category.slice(1)
-    );
-
-    // Generate image title
-    let title = categoryLabels.join(" + ") + " Pattern";
-
-    if (location) {
-        title += " - " + location;
-    }
-
-    // Generate category description
-    const descriptions = {
-        translation:
-            "A pattern created by moving a shape from one position to another without changing its size, shape, or orientation.",
-
-        reflection:
-            "A pattern created by flipping a shape across a line, producing a mirror image.",
-
-        rotation:
-            "A pattern formed by turning a shape around a fixed point at a specific angle.",
-
-        dilation:
-            "A pattern created by enlarging or reducing a shape while maintaining its proportions.",
-
-        other:
-            "A geometric pattern demonstrating transformations in the modern world."
-    };
-
-    const description = detectedCategories
-        .map(category => descriptions[category])
-        .join(" ");
-
-    return {
-        category: detectedCategories.join(" "),
-        categoryLabel: categoryLabels.join(" + "),
-        title: title,
-        description: description
-    };
-}
-
-
-// ==================================
-// AUTOMATICALLY UPDATE GALLERY DATA
-// ==================================
-
-galleryItems.forEach(item => {
-
-    const img = item.querySelector("img");
-
-    const info = getImageInformation(img);
-
-    // Update HTML data attributes
-    item.dataset.category = info.category;
-    item.dataset.title = info.title;
-    item.dataset.description = info.description;
-
-});
-
-
-// ==================================
-// FILTER GALLERY
-// ==================================
-
-function filterGallery(filter) {
-
-    galleryItems.forEach(item => {
-
-        const categories = item.dataset.category.split(" ");
-
-        const matches =
-            filter === "all" || categories.includes(filter);
-
-        item.style.display = matches ? "" : "none";
-
-    });
-
-    // Update currently visible images
-    visibleItems = Array.from(galleryItems).filter(item =>
-        item.style.display !== "none"
-    );
+    return categories
+        .toLowerCase()
+        .split(/[\s,]+/)
+        .filter(category => category !== "");
 
 }
 
 
-// Initial gallery
-filterGallery("all");
-
+// ========================================
+// GALLERY FILTER
+// ========================================
 
 filterButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        filterButtons.forEach(btn =>
-            btn.classList.remove("active")
-        );
+        // Update active filter button
+        filterButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
 
         button.classList.add("active");
 
-        const filter = button.dataset.filter;
+        const filter = button.dataset.filter.toLowerCase();
 
-        filterGallery(filter);
+        // Filter gallery images
+        galleryItems.forEach(item => {
+
+            const categories = getItemCategories(item);
+
+            // Show item if it belongs to the selected category
+            const matchesFilter =
+                filter === "all" ||
+                categories.includes(filter);
+
+            item.classList.toggle("hide", !matchesFilter);
+
+        });
 
     });
 
 });
 
 
-// ==================================
+// ========================================
 // IMAGE VIEWER
-// ==================================
+// ========================================
 
-function showImage(index) {
+// Get only currently visible images
+function getVisibleItems() {
 
-    if (visibleItems.length === 0) return;
-
-    // Loop through images
-    if (index < 0) {
-        index = visibleItems.length - 1;
-    }
-
-    if (index >= visibleItems.length) {
-        index = 0;
-    }
-
-    currentIndex = index;
-
-    const item = visibleItems[currentIndex];
-    const img = item.querySelector("img");
-
-    const info = getImageInformation(img);
-
-    // Display selected image
-    selectedImage.src = img.src;
-    selectedImage.alt = info.title;
-
-    // Display automatically generated information
-    imageTitle.textContent = info.title;
-    imageDescription.textContent = info.description;
-    imageCategory.textContent = info.categoryLabel.toUpperCase();
-
-    // Update image counter
-    imageCounter.textContent =
-        String(currentIndex + 1).padStart(2, "0") +
-        " / " +
-        String(visibleItems.length).padStart(2, "0");
+    return Array.from(galleryItems).filter(item => {
+        return !item.classList.contains("hide");
+    });
 
 }
 
 
-// ==================================
+// Display selected image
+function showImage() {
+
+    const visibleItems = getVisibleItems();
+
+    if (visibleItems.length === 0) return;
+
+    // Keep index within available images
+    currentIndex =
+        (currentIndex + visibleItems.length) % visibleItems.length;
+
+    const item = visibleItems[currentIndex];
+    const img = item.querySelector("img");
+
+    // Display image
+    selectedImage.src = img.currentSrc || img.src;
+    selectedImage.alt = img.alt || "Selected gallery image";
+
+    // Display title and description
+    imageTitle.textContent =
+        item.dataset.title || "Untitled Pattern";
+
+    imageDescription.textContent =
+        item.dataset.description || "No description available.";
+
+    // Display all categories assigned to the image
+    const categories = getItemCategories(item);
+
+    imageCategory.textContent = categories.length > 0
+        ? categories.map(category =>
+            category.charAt(0).toUpperCase() + category.slice(1)
+          ).join(" / ")
+        : "Uncategorized";
+
+    // Update image counter
+    imageCounter.textContent =
+        `${String(currentIndex + 1).padStart(2, "0")} / ${String(visibleItems.length).padStart(2, "0")}`;
+
+    // Hide arrows if there is only one image
+    const hasMultipleImages = visibleItems.length > 1;
+
+    prevImage.hidden = !hasMultipleImages;
+    nextImage.hidden = !hasMultipleImages;
+
+}
+
+
+// ========================================
 // OPEN IMAGE VIEWER
-// ==================================
+// ========================================
 
 galleryItems.forEach(item => {
 
     item.addEventListener("click", () => {
 
-        visibleItems = Array.from(galleryItems).filter(item =>
-            item.style.display !== "none"
-        );
+        const visibleItems = getVisibleItems();
 
-        const index = visibleItems.indexOf(item);
+        currentIndex = visibleItems.indexOf(item);
 
-        showImage(index);
+        if (currentIndex < 0) return;
+
+        lastFocusedElement = document.activeElement;
+
+        showImage();
 
         imageViewer.classList.add("active");
+
         imageViewer.setAttribute("aria-hidden", "false");
 
-        document.body.style.overflow = "hidden";
+        document.body.classList.add("viewer-open");
+
+        closeViewer.focus();
 
     });
 
 });
 
 
-// ==================================
-// PREVIOUS AND NEXT BUTTONS
-// ==================================
+// ========================================
+// NEXT AND PREVIOUS BUTTONS
+// ========================================
 
+// Next image
 nextImage.addEventListener("click", () => {
-    showImage(currentIndex + 1);
+
+    currentIndex++;
+
+    showImage();
+
 });
 
+
+// Previous image
 prevImage.addEventListener("click", () => {
-    showImage(currentIndex - 1);
+
+    currentIndex--;
+
+    showImage();
+
 });
 
 
-// ==================================
+// ========================================
 // CLOSE IMAGE VIEWER
-// ==================================
+// ========================================
 
-function closeImageViewer() {
+function hideViewer() {
 
     imageViewer.classList.remove("active");
+
     imageViewer.setAttribute("aria-hidden", "true");
 
-    document.body.style.overflow = "";
+    document.body.classList.remove("viewer-open");
+
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+    }
 
 }
 
-closeViewer.addEventListener("click", closeImageViewer);
+
+// Close button
+closeViewer.addEventListener("click", hideViewer);
 
 
 // Close when clicking outside the viewer window
 imageViewer.addEventListener("click", event => {
 
     if (event.target === imageViewer) {
-        closeImageViewer();
+        hideViewer();
     }
 
 });
 
 
-// ==================================
-// KEYBOARD NAVIGATION
-// ==================================
+// ========================================
+// KEYBOARD CONTROLS
+// ========================================
 
 document.addEventListener("keydown", event => {
 
-    if (!imageViewer.classList.contains("active")) return;
+    const viewerIsOpen =
+        imageViewer.classList.contains("active");
 
-    if (event.key === "ArrowRight") {
-        showImage(currentIndex + 1);
-    }
+    if (!viewerIsOpen) return;
 
-    if (event.key === "ArrowLeft") {
-        showImage(currentIndex - 1);
-    }
-
+    // Close using ESC
     if (event.key === "Escape") {
-        closeImageViewer();
+
+        hideViewer();
+
     }
+
+    // Next image using right arrow
+    else if (event.key === "ArrowRight") {
+
+        event.preventDefault();
+
+        currentIndex++;
+
+        showImage();
+
+    }
+
+    // Previous image using left arrow
+    else if (event.key === "ArrowLeft") {
+
+        event.preventDefault();
+
+        currentIndex--;
+
+        showImage();
+
+    }
+
+});
+
+
+// Prevent clicks inside viewer window from closing it
+viewerWindow.addEventListener("click", event => {
+
+    event.stopPropagation();
 
 });

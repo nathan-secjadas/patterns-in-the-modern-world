@@ -10,16 +10,13 @@
     min-height: 0;
 }
 
-
-/* TITLE BAR */
-
 .title-bar {
     flex-shrink: 0;
 }
 
 
 /* ========================================
-   PINK FILTER BAR
+   FILTER BAR
 ======================================== */
 
 .gallery-filter {
@@ -36,9 +33,6 @@
 
     flex-shrink: 0;
 }
-
-
-/* FILTER BUTTONS */
 
 .filter-btn {
     padding: 4px 12px;
@@ -62,20 +56,21 @@
 
 
 /* ========================================
-   SCROLLABLE GALLERY
+   GALLERY GRID
 ======================================== */
 
 .gallery {
-    padding: 5px;
-
     display: grid;
-    grid-template-columns: repeat(4, 0.245fr);
-    column-gap: 10px;
-    row-gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 
-    justify-content: center;
+    /* Spacing between every image */
+    gap: 28px;
+
+    padding: 24px;
+    box-sizing: border-box;
+
     align-content: start;
-    align-items: center;
+    align-items: start;
 
     flex: 1;
     min-height: 0;
@@ -90,40 +85,59 @@
 }
 
 
-/* GALLERY IMAGES */
-
-.gallery img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+/* ========================================
+   GALLERY ITEMS
+======================================== */
 
 .gallery-item {
+    position: relative;
     width: 100%;
+    height: 190px;
+    min-width: 0;
+
+    overflow: hidden;
     cursor: pointer;
+
+    border-radius: 3px;
+
+    transition: box-shadow 0.2s ease;
 }
 
 .gallery-item img {
-    width: 100%;
-    height: auto;
     display: block;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition: transform 0.25s ease;
 }
 
+/* Hover effect */
+.gallery-item:hover {
+    z-index: 2;
+    box-shadow: 0 0 0 4px white,
+                0 0 0 7px var(--deep-pink);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.04);
+}
+
+/* Filter behavior */
 .gallery-item.hide {
-    display: none;
+    display: none !important;
 }
 
 
 /* ========================================
-   RETRO IMAGE VIEWER WINDOW
+   IMAGE VIEWER
 ======================================== */
 
 body.viewer-open {
     overflow: hidden;
 }
-
-
-/* DARK BACKGROUND */
 
 .image-viewer {
     position: fixed;
@@ -150,17 +164,11 @@ body.viewer-open {
                 visibility 0.2s ease;
 }
 
-
-/* SHOW VIEWER */
-
 .image-viewer.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
-
-
-/* VIEWER WINDOW */
 
 .viewer-window {
     display: flex;
@@ -187,7 +195,9 @@ body.viewer-open {
 }
 
 
-/* VIEWER TITLE BAR */
+/* ========================================
+   VIEWER TITLE BAR
+======================================== */
 
 .viewer-window .title-bar {
     margin: 5px 5px 0;
@@ -245,21 +255,9 @@ body.viewer-open {
 
     overflow: hidden;
 
-    background:
-        linear-gradient(45deg, #f5eaf0 25%, transparent 25%),
-        linear-gradient(-45deg, #f5eaf0 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #f5eaf0 75%),
-        linear-gradient(-45deg, transparent 75%, #f5eaf0 75%),
-        #fffafd;
-
-    background-size: 18px 18px;
-    background-position: 0 0, 0 9px, 9px -9px, -9px 0;
-
+    background: #f7b6d2;
     border: 2px inset #e9b8c5;
 }
-
-
-/* SELECTED IMAGE */
 
 .viewer-image-container img {
     display: block;
@@ -271,15 +269,14 @@ body.viewer-open {
     height: auto;
 
     object-fit: contain;
-
     image-rendering: auto;
 
-    box-shadow: 0 3px 12px rgba(50, 35, 50, 0.18);
+    box-shadow: none;
 }
 
 
 /* ========================================
-   IMAGE NAVIGATION ARROWS
+   VIEWER ARROWS
 ======================================== */
 
 .viewer-arrow {
@@ -299,7 +296,6 @@ body.viewer-open {
     transform: translateY(-50%);
 
     color: white;
-
     background: linear-gradient(145deg, #ff9caf, #f47d98);
 
     border: 2px outset #ffc2cd;
@@ -313,37 +309,22 @@ body.viewer-open {
     box-shadow: 2px 3px 0 rgba(120, 67, 84, 0.2);
 }
 
-
-/* ARROW HOVER */
-
 .viewer-arrow:hover {
     background: linear-gradient(145deg, #ffb6c4, #ff8fa7);
 }
-
-
-/* ARROW CLICK */
 
 .viewer-arrow:active {
     border-style: inset;
     transform: translateY(-50%) scale(0.96);
 }
 
-
-/* LEFT ARROW */
-
 .viewer-arrow-left {
     left: 8px;
 }
 
-
-/* RIGHT ARROW */
-
 .viewer-arrow-right {
     right: 8px;
 }
-
-
-/* HIDE ARROWS WHEN NEEDED */
 
 .viewer-arrow[hidden] {
     display: none;
@@ -359,28 +340,19 @@ body.viewer-open {
     padding: 12px 15px;
 
     color: #47343b;
-
     background: #fff0f3;
 
     border: 2px solid #f3b1c0;
     border-radius: 8px;
 }
 
-
-/* IMAGE TITLE */
-
 .viewer-description h2 {
     margin: 0;
-
     color: var(--deep-pink);
 
     font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-
     overflow-wrap: anywhere;
 }
-
-
-/* DIVIDER */
 
 .description-divider {
     height: 2px;
@@ -393,9 +365,6 @@ body.viewer-open {
     );
 }
 
-
-/* DESCRIPTION TEXT */
-
 .viewer-description p {
     margin: 0;
 
@@ -406,15 +375,11 @@ body.viewer-open {
     overflow-wrap: anywhere;
 }
 
-
-/* IMAGE CATEGORY */
-
 .image-category {
     margin-top: 12px;
     padding-top: 8px;
 
     color: var(--deep-pink);
-
     border-top: 1px dashed #e7a2b1;
 
     font-size: 0.9rem;
@@ -440,7 +405,6 @@ body.viewer-open {
     padding: 9px 12px;
 
     color: white;
-
     background: linear-gradient(
         90deg,
         var(--deep-pink),
@@ -448,19 +412,12 @@ body.viewer-open {
     );
 
     border-radius: 0 0 8px 8px;
-
     font-size: 0.85rem;
 }
-
-
-/* FOOTER HINT */
 
 .viewer-hint {
     opacity: 0.95;
 }
-
-
-/* IMAGE COUNTER */
 
 #imageCounter {
     flex-shrink: 0;
@@ -468,8 +425,7 @@ body.viewer-open {
     padding: 4px 8px;
 
     color: var(--deep-pink);
-
-    background: #fff;
+    background: white;
 
     border: 2px inset #ffd0d9;
     border-radius: 4px;
@@ -478,7 +434,9 @@ body.viewer-open {
 }
 
 
-/* KEYBOARD FOCUS */
+/* ========================================
+   KEYBOARD FOCUS
+======================================== */
 
 .viewer-arrow:focus-visible,
 #closeViewer:focus-visible {
@@ -491,7 +449,24 @@ body.viewer-open {
    RESPONSIVE DESIGN
 ======================================== */
 
+@media (max-width: 1000px) {
+    .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        padding: 20px;
+    }
+}
+
 @media (max-width: 700px) {
+    .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        padding: 15px;
+    }
+
+    .gallery-item {
+        height: 170px;
+    }
 
     .image-viewer {
         padding: 10px;
@@ -532,47 +507,16 @@ body.viewer-open {
     .viewer-hint {
         max-width: 65%;
     }
-
 }
 
+@media (max-width: 450px) {
+    .gallery {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 20px;
+        padding: 12px;
+    }
 
-/* PINK BACKGROUND BEHIND ENLARGED IMAGE */
-.viewer-image-container {
-    background-color: #f7b6d2 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-#selectedImage {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background-color: transparent;
-}
-
-
-
-/* REMOVE GHOST / SQUARE SHADOW FROM IMAGE VIEWER */
-
-.viewer-window,
-.viewer-content,
-.viewer-image-container,
-#selectedImage {
-    box-shadow: none !important;
-    filter: none !important;
-    outline: none !important;
-}
-
-/* Keep the pink background */
-.viewer-image-container {
-    background: #f7b6d2 !important;
-}
-
-/* Prevent image shadow */
-#selectedImage {
-    background: transparent !important;
-    box-shadow: none !important;
-    filter: none !important;
+    .gallery-item {
+        height: 220px;
+    }
 }

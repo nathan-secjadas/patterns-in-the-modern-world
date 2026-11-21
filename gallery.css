@@ -1,4 +1,8 @@
-/* MAIN CONTAINER */
+
+/* ========================================
+   MAIN CONTAINER
+======================================== */
+
 #container {
     display: flex;
     flex-direction: column;
@@ -8,12 +12,16 @@
 
 
 /* TITLE BAR */
+
 .title-bar {
     flex-shrink: 0;
 }
 
 
-/* PINK FILTER BAR */
+/* ========================================
+   PINK FILTER BAR
+======================================== */
+
 .gallery-filter {
     display: flex;
     flex-wrap: wrap;
@@ -31,6 +39,7 @@
 
 
 /* FILTER BUTTONS */
+
 .filter-btn {
     padding: 4px 12px;
     font-family: var(--font);
@@ -52,7 +61,10 @@
 }
 
 
-/* SCROLLABLE GALLERY */
+/* ========================================
+   SCROLLABLE GALLERY
+======================================== */
+
 .gallery {
     padding: 5px;
 
@@ -79,6 +91,7 @@
 
 
 /* GALLERY IMAGES */
+
 .gallery img {
     width: 100%;
     height: auto;
@@ -87,6 +100,7 @@
 
 .gallery-item {
     width: 100%;
+    cursor: pointer;
 }
 
 .gallery-item img {
@@ -97,4 +111,468 @@
 
 .gallery-item.hide {
     display: none;
+}
+
+
+/* ========================================
+   RETRO IMAGE VIEWER WINDOW
+======================================== */
+
+body.viewer-open {
+    overflow: hidden;
+}
+
+
+/* DARK BACKGROUND */
+
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+    box-sizing: border-box;
+
+    background: rgba(31, 35, 58, 0.72);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity 0.2s ease,
+                visibility 0.2s ease;
+}
+
+
+/* SHOW VIEWER */
+
+.image-viewer.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+
+/* VIEWER WINDOW */
+
+.viewer-window {
+    display: flex;
+    flex-direction: column;
+
+    width: min(900px, 94vw);
+    max-height: min(92vh, 900px);
+
+    overflow: hidden;
+    box-sizing: border-box;
+
+    background: var(--pink);
+    border: 3px outset var(--pink);
+    border-radius: 12px;
+
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.35);
+
+    transform: scale(0.96);
+    transition: transform 0.2s ease;
+}
+
+.image-viewer.active .viewer-window {
+    transform: scale(1);
+}
+
+
+/* VIEWER TITLE BAR */
+
+.viewer-window .title-bar {
+    margin: 5px 5px 0;
+    flex-shrink: 0;
+}
+
+.viewer-window .title-bar-controls {
+    align-items: center;
+}
+
+.viewer-window .title-btn.close {
+    padding: 0;
+    font-family: var(--font);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+
+/* ========================================
+   VIEWER CONTENT
+======================================== */
+
+.viewer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    min-height: 0;
+    margin: 0 5px;
+    padding: 12px;
+
+    overflow-y: auto;
+
+    background: var(--off-white);
+    border: 2px inset #f4b5c2;
+}
+
+
+/* ========================================
+   ENLARGED IMAGE
+======================================== */
+
+.viewer-image-container {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+    max-height: 58vh;
+
+    padding: 12px 52px;
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(45deg, #f5eaf0 25%, transparent 25%),
+        linear-gradient(-45deg, #f5eaf0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f5eaf0 75%),
+        linear-gradient(-45deg, transparent 75%, #f5eaf0 75%),
+        #fffafd;
+
+    background-size: 18px 18px;
+    background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+
+    border: 2px inset #e9b8c5;
+}
+
+
+/* SELECTED IMAGE */
+
+.viewer-image-container img {
+    display: block;
+
+    max-width: 100%;
+    max-height: 54vh;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+
+    image-rendering: auto;
+
+    box-shadow: 0 3px 12px rgba(50, 35, 50, 0.18);
+}
+
+
+/* ========================================
+   IMAGE NAVIGATION ARROWS
+======================================== */
+
+.viewer-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 48px;
+
+    padding: 0;
+
+    transform: translateY(-50%);
+
+    color: white;
+
+    background: linear-gradient(145deg, #ff9caf, #f47d98);
+
+    border: 2px outset #ffc2cd;
+    border-radius: 7px;
+
+    font-family: Arial, sans-serif;
+    font-size: 1.05rem;
+
+    cursor: pointer;
+
+    box-shadow: 2px 3px 0 rgba(120, 67, 84, 0.2);
+}
+
+
+/* ARROW HOVER */
+
+.viewer-arrow:hover {
+    background: linear-gradient(145deg, #ffb6c4, #ff8fa7);
+}
+
+
+/* ARROW CLICK */
+
+.viewer-arrow:active {
+    border-style: inset;
+    transform: translateY(-50%) scale(0.96);
+}
+
+
+/* LEFT ARROW */
+
+.viewer-arrow-left {
+    left: 8px;
+}
+
+
+/* RIGHT ARROW */
+
+.viewer-arrow-right {
+    right: 8px;
+}
+
+
+/* HIDE ARROWS WHEN NEEDED */
+
+.viewer-arrow[hidden] {
+    display: none;
+}
+
+
+/* ========================================
+   IMAGE DESCRIPTION
+======================================== */
+
+.viewer-description {
+    margin-top: 12px;
+    padding: 12px 15px;
+
+    color: #47343b;
+
+    background: #fff0f3;
+
+    border: 2px solid #f3b1c0;
+    border-radius: 8px;
+}
+
+
+/* IMAGE TITLE */
+
+.viewer-description h2 {
+    margin: 0;
+
+    color: var(--deep-pink);
+
+    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+
+    overflow-wrap: anywhere;
+}
+
+
+/* DIVIDER */
+
+.description-divider {
+    height: 2px;
+    margin: 8px 0;
+
+    background: repeating-linear-gradient(
+        90deg,
+        var(--deep-pink) 0 8px,
+        transparent 8px 12px
+    );
+}
+
+
+/* DESCRIPTION TEXT */
+
+.viewer-description p {
+    margin: 0;
+
+    font-family: var(--font);
+    font-size: 0.98rem;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* IMAGE CATEGORY */
+
+.image-category {
+    margin-top: 12px;
+    padding-top: 8px;
+
+    color: var(--deep-pink);
+
+    border-top: 1px dashed #e7a2b1;
+
+    font-size: 0.9rem;
+}
+
+.image-category span {
+    color: #6b4652;
+}
+
+
+/* ========================================
+   VIEWER FOOTER
+======================================== */
+
+.viewer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin: 0 5px 5px;
+    padding: 9px 12px;
+
+    color: white;
+
+    background: linear-gradient(
+        90deg,
+        var(--deep-pink),
+        #ffc2cd
+    );
+
+    border-radius: 0 0 8px 8px;
+
+    font-size: 0.85rem;
+}
+
+
+/* FOOTER HINT */
+
+.viewer-hint {
+    opacity: 0.95;
+}
+
+
+/* IMAGE COUNTER */
+
+#imageCounter {
+    flex-shrink: 0;
+
+    padding: 4px 8px;
+
+    color: var(--deep-pink);
+
+    background: #fff;
+
+    border: 2px inset #ffd0d9;
+    border-radius: 4px;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* KEYBOARD FOCUS */
+
+.viewer-arrow:focus-visible,
+#closeViewer:focus-visible {
+    outline: 3px solid #6d91d7;
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 700px) {
+
+    .image-viewer {
+        padding: 10px;
+    }
+
+    .viewer-window {
+        width: 100%;
+        max-height: 94vh;
+    }
+
+    .viewer-content {
+        padding: 8px;
+    }
+
+    .viewer-image-container {
+        min-height: 180px;
+        max-height: 48vh;
+        padding: 8px 42px;
+    }
+
+    .viewer-image-container img {
+        max-height: 45vh;
+    }
+
+    .viewer-arrow {
+        width: 32px;
+        height: 42px;
+    }
+
+    .viewer-description {
+        padding: 10px;
+    }
+
+    .viewer-footer {
+        font-size: 0.72rem;
+    }
+
+    .viewer-hint {
+        max-width: 65%;
+    }
+
+}
+
+
+/* PINK BACKGROUND BEHIND ENLARGED IMAGE */
+.viewer-image-container {
+    background-color: #f7b6d2 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#selectedImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: transparent;
+}
+
+
+
+/* REMOVE GHOST / SQUARE SHADOW FROM IMAGE VIEWER */
+
+.viewer-window,
+.viewer-content,
+.viewer-image-container,
+#selectedImage {
+    box-shadow: none !important;
+    filter: none !important;
+    outline: none !important;
+}
+
+/* Keep the pink background */
+.viewer-image-container {
+    background: #f7b6d2 !important;
+}
+
+/* Prevent image shadow */
+#selectedImage {
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
 }

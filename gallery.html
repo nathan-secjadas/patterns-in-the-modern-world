@@ -1,123 +1,480 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <link href='https://fonts.googleapis.com/css?family=Pixelify Sans' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans" rel="stylesheet">
     <link rel="icon" href="assets/icon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="gallery.css">
+
     <title>Patterns in the Modern World</title>
 </head>
 
 <body class="no-scrollbar">
+
     <div class="cursor"></div>
+
+    <!-- ================================== -->
+    <!-- NAVIGATION BAR -->
+    <!-- ================================== -->
+
     <header class="nav-header">
+
         <h1 class="site-logo">
             <a href="index.html">
                 <img src="assets/site-logo.png" alt="patterns in the modern world">
             </a>
         </h1>
+
         <ul>
             <li><a href="index.html">home</a></li>
             <li><a class="active" href="gallery.html">gallery</a></li>
             <li><a href="pattern_generator.html">pattern generator</a></li>
         </ul>
+
     </header>
+
     <script src="cursor.js"></script>
-    
+
+
+    <!-- ================================== -->
+    <!-- GALLERY LAYOUT -->
+    <!-- ================================== -->
+
     <div class="page-layout">
+
         <div id="container">
+
+            <!-- GALLERY TITLE BAR -->
+
             <div class="title-bar">
+
                 <span class="title-bar-text">gallery</span>
+
                 <div class="title-bar-controls" aria-hidden="true">
                     <span class="title-btn minimize"></span>
                     <span class="title-btn maximize"></span>
                     <span class="title-btn close">x</span>
                 </div>
+
             </div>
 
+
+            <!-- ================================== -->
+            <!-- FILTER BUTTONS -->
+            <!-- ================================== -->
+
             <div class="gallery-filter">
+
                 Filter by:
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="translation">Translation</button>
-                <button class="filter-btn" data-filter="reflection">Reflection</button>
-                <button class="filter-btn" data-filter="rotation">Rotation</button>
-                <button class="filter-btn" data-filter="dilation">Dilation</button>
+
+                <button class="filter-btn active" data-filter="all">
+                    All
+                </button>
+
+                <button class="filter-btn" data-filter="translation">
+                    Translation
+                </button>
+
+                <button class="filter-btn" data-filter="reflection">
+                    Reflection
+                </button>
+
+                <button class="filter-btn" data-filter="rotation">
+                    Rotation
+                </button>
+
+                <button class="filter-btn" data-filter="dilation">
+                    Dilation
+                </button>
+
             </div>
+
+
+            <!-- ================================== -->
+            <!-- GALLERY IMAGES -->
+            <!-- ================================== -->
 
             <div class="gallery">
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+                <!-- DILATION -->
+
+                <div class="gallery-item"
+                    data-category="dilation"
+                    data-title="Dilation Pattern - ALB Pond"
+                    data-description="A pattern created by enlarging or reducing a shape while maintaining its proportions.">
+
+                    <img src="images/dilation-ALB_pond (1).png"
+                        alt="Dilation pattern - ALB Pond">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+                <div class="gallery-item"
+                    data-category="dilation"
+                    data-title="Dilation Pattern - SM Grocery"
+                    data-description="A pattern created by enlarging or reducing a shape while maintaining its proportions.">
+
+                    <img src="images/dilation-SMGrocery (1).JPG"
+                        alt="Dilation pattern - SM Grocery">
+
                 </div>
 
-                <div class="gallery-item" data-category="rotation">
-                    <img src="images/dummy_img.png" alt="Rotation pattern">
+
+                <div class="gallery-item"
+                    data-category="dilation"
+                    data-title="Dilation Pattern - Vent ACB"
+                    data-description="A pattern created by enlarging or reducing a shape while maintaining its proportions.">
+
+                    <img src="images/dilation-ventACB (1).JPG"
+                        alt="Dilation pattern - Vent ACB">
+
                 </div>
 
-                <div class="gallery-item" data-category="dilation">
-                    <img src="images/dummy_img.png" alt="Dilation pattern">
+
+                <!-- DILATION + TRANSLATION -->
+
+                <div class="gallery-item"
+                    data-category="dilation"
+                    data-title="Dilation and Translation Pattern - ALB Gate"
+                    data-description="A pattern combining dilation and translation, demonstrating changes in size alongside the movement of shapes across a surface.">
+
+                    <img src="images/dilationtranslation-ALBgate (1).JPG"
+                        alt="Dilation and translation pattern - ALB Gate">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+
+                <!-- REFLECTION -->
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection Pattern - Building Behind KFC"
+                    data-description="A pattern created by flipping a shape across a line, producing a mirror image.">
+
+                    <img src="images/reflection-bldgbehindkfc (1).JPG"
+                        alt="Reflection pattern - Building Behind KFC">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection Pattern - Car Megamall"
+                    data-description="A design that demonstrates symmetry through the reflection of shapes across an axis.">
+
+                    <img src="images/reflection-CarMegamall (1).JPG"
+                        alt="Reflection pattern - Car Megamall">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection Pattern - Chess MEGAC"
+                    data-description="A repeating arrangement that uses mirror images to create visual symmetry.">
+
+                    <img src="images/reflection-chessMEGAC (1).JPG"
+                        alt="Reflection pattern - Chess MEGAC">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection Pattern - MEGAC Second Floor"
+                    data-description="A geometric design that uses reflection to produce symmetrical arrangements.">
+
+                    <img src="images/reflection-MEGACsecondfloor (1).JPG"
+                        alt="Reflection pattern - MEGAC Second Floor">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection Pattern - Ortigas Extension"
+                    data-description="A pattern demonstrating symmetry through reflected shapes and arrangements.">
+
+                    <img src="images/reflection-Ortigas extension, st. Joseph subd (chess) (1).jpg"
+                        alt="Reflection pattern - Ortigas Extension">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+
+                <!-- REFLECTION + TRANSLATION -->
+
+                <div class="gallery-item"
+                    data-category="reflection"
+                    data-title="Reflection and Translation Pattern - MEGAC"
+                    data-description="A pattern combining reflection and translation, using mirrored shapes and repeated movements to create a geometric arrangement.">
+
+                    <img src="images/reflectiontranslation-MEGAC (1).JPG"
+                        alt="Reflection and translation pattern - MEGAC">
+
                 </div>
 
-                <div class="gallery-item" data-category="rotation">
-                    <img src="images/dummy_img.png" alt="Rotation pattern">
+
+
+                <!-- ROTATION -->
+
+                <div class="gallery-item"
+                    data-category="rotation"
+                    data-title="Rotation Pattern - Ortigas Extension"
+                    data-description="A pattern formed by turning a shape around a fixed point at a specific angle.">
+
+                    <img src="images/rotation-Ortigas extension, st. Joseph subd (1).jpg"
+                        alt="Rotation pattern - Ortigas Extension">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Dilation pattern">
+
+                <div class="gallery-item"
+                    data-category="rotation"
+                    data-title="Rotation Pattern - Residencia 8888"
+                    data-description="A repeating design created by rotating shapes around a common center point.">
+
+                    <img src="images/rotation-residencia8888 (1).JPG"
+                        alt="Rotation pattern - Residencia 8888">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+                <div class="gallery-item"
+                    data-category="rotation"
+                    data-title="Rotation Pattern - Spiral Megamall Department Store"
+                    data-description="A pattern created through the repeated rotation of shapes around a common center.">
+
+                    <img src="images/rotation-SpiralMegamallDepartmentStore (1).JPG"
+                        alt="Rotation pattern - Spiral Megamall Department Store">
+
                 </div>
 
-                <div class="gallery-item" data-category="reflection">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+                <div class="gallery-item"
+                    data-category="rotation"
+                    data-title="Rotation Pattern - UA&P Gate"
+                    data-description="A pattern formed by turning shapes around a fixed point, creating a sense of movement and symmetry.">
+
+                    <img src="images/rotation-UAPgate (1).JPG"
+                        alt="Rotation pattern - UA&P Gate">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Translation pattern">
+
+
+                <!-- TRANSLATION -->
+
+                <div class="gallery-item"
+                    data-category="translation"
+                    data-title="Translation Pattern - UCAF Wall"
+                    data-description="A pattern formed by shifting identical shapes while preserving their original orientation.">
+
+                    <img src="images/translation_wallUCAF (1).JPG"
+                        alt="Translation pattern - UCAF Wall">
+
                 </div>
 
-                <div class="gallery-item" data-category="translation">
-                    <img src="images/dummy_img.png" alt="Reflection pattern">
+
+                <div class="gallery-item"
+                    data-category="translation"
+                    data-title="Translation Pattern - ACB Building Floor"
+                    data-description="A geometric pattern that maintains the same shape and orientation through repeated displacement.">
+
+                    <img src="images/translation-ACB_buildingfloor (1).png"
+                        alt="Translation pattern - ACB Building Floor">
+
+                </div>
+
+
+                <div class="gallery-item"
+                    data-category="translation"
+                    data-title="Translation Pattern - Building Behind KFC"
+                    data-description="A repeating pattern created by moving shapes across a plane without rotating or resizing them.">
+
+                    <img src="images/translation-bldgbehindkfc (1).JPG"
+                        alt="Translation pattern - Building Behind KFC">
+
+                </div>
+
+
+                <div class="gallery-item"
+                    data-category="translation"
+                    data-title="Translation Pattern - Ortigas Extension"
+                    data-description="A pattern created by repeating shapes through equal movements in a particular direction.">
+
+                    <img src="images/translation-Ortigas extension, st. Joseph subd (1).jpg"
+                        alt="Translation pattern - Ortigas Extension">
+
+                </div>
+
+
+                <div class="gallery-item"
+                    data-category="translation"
+                    data-title="Translation Pattern - Ortigas Extension 02"
+                    data-description="A geometric arrangement created through the consistent movement of shapes across a surface.">
+
+                    <img src="images/translation-Ortigas extension, st. Joseph subd(1) (1).jpg"
+                        alt="Translation pattern - Ortigas Extension 02">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================== -->
+    <!-- RETRO IMAGE VIEWER -->
+    <!-- ================================== -->
+
+    <div class="image-viewer"
+        id="imageViewer"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden="true"
+        aria-label="Image viewer">
+
+
+        <div class="viewer-window">
+
+
+            <!-- VIEWER TITLE BAR -->
+
+            <div class="title-bar">
+
+                <span class="title-bar-text">image_viewer.exe</span>
+
+                <div class="title-bar-controls">
+
+                    <button class="title-btn close"
+                        id="closeViewer">
+                        x
+                    </button>
+
                 </div>
 
             </div>
+
+
+
+            <!-- VIEWER CONTENT -->
+
+            <div class="viewer-content">
+
+
+                <!-- SELECTED IMAGE -->
+
+                <div class="viewer-image-container">
+
+
+                    <!-- PREVIOUS IMAGE -->
+
+                    <button class="viewer-arrow viewer-arrow-left"
+                        id="prevImage"
+                        type="button"
+                        aria-label="Previous image">
+
+                        &#9664;
+
+                    </button>
+
+
+                    <!-- ENLARGED IMAGE -->
+
+                    <img
+                        id="selectedImage"
+                        src=""
+                        alt="Selected gallery image">
+
+
+                    <!-- NEXT IMAGE -->
+
+                    <button class="viewer-arrow viewer-arrow-right"
+                        id="nextImage"
+                        type="button"
+                        aria-label="Next image">
+
+                        &#9654;
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- IMAGE DESCRIPTION -->
+
+                <div class="viewer-description">
+
+                    <h2 id="imageTitle">
+                        IMAGE TITLE
+                    </h2>
+
+
+                    <div class="description-divider"></div>
+
+
+                    <p id="imageDescription">
+                        Image description goes here.
+                    </p>
+
+
+                    <div class="image-category">
+
+                        CATEGORY:
+
+                        <span id="imageCategory">
+                            TRANSLATION
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- VIEWER FOOTER -->
+
+            <div class="viewer-footer">
+
+                <span class="viewer-hint">
+                    USE THE ARROW KEYS TO BROWSE
+                </span>
+
+                <span id="imageCounter">
+                    01 / 19
+                </span>
+
+            </div>
+
+
         </div>
+
     </div>
 
-    <script src="gallery.js"></script>
-</body>
 
+
+    <!-- ================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================== -->
+
+    <script src="gallery.js"></script>
+
+</body>
 </html>

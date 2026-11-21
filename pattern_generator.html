@@ -53,6 +53,7 @@
                             <h2>1. shape</h2>
                             <button type="button" class="panel-reset" data-reset="shape" aria-label="reset the shape options" title="reset the shape options">reset</button>
                         </div>
+                        <p class="gen-hint">Each shape has its own settings directly beneath it. Rectangles and ovals use a width and a height in place of a size; corner radius rounds a rectangle, and tilt rotates an oval counterclockwise about its own center.</p>
                         <div id="shape-list"></div>
                         <div class="gen-buttons">
                             <button type="button" id="add-shape-btn">add shape</button>
@@ -62,22 +63,6 @@
                             <select id="shape-mode"></select>
                         </label>
                         <p id="shape-mode-hint" class="gen-hint"></p>
-                        <label class="gen-field" data-shapes="circle triangle square pentagon hexagon">size
-                            <input type="number" id="shape-size" value="60" min="5" max="400" step="any">
-                        </label>
-                        <label class="gen-field" data-shapes="rectangle oval" hidden>width
-                            <input type="number" id="shape-width" value="90" min="5" max="800" step="any">
-                        </label>
-                        <label class="gen-field" data-shapes="rectangle oval" hidden>height
-                            <input type="number" id="shape-height" value="50" min="5" max="800" step="any">
-                        </label>
-                        <label class="gen-field" data-shapes="rectangle" hidden>corner radius
-                            <input type="number" id="shape-corner" value="0" min="0" max="400" step="any">
-                        </label>
-                        <label class="gen-field" data-shapes="oval" hidden>tilt (degrees)
-                            <input type="number" id="shape-tilt" value="0" step="any">
-                        </label>
-                        <p class="gen-hint" data-shapes="rectangle oval" hidden>Rectangles and ovals use a width and a height in place of a single size. Corner radius rounds the corners of a rectangle; tilt rotates an oval counterclockwise about its own center.</p>
                         <label class="gen-field">start x
                             <input type="number" id="shape-x" value="-250" step="any">
                         </label>

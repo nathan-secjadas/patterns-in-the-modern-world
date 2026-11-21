@@ -162,8 +162,33 @@
         ['hexagon', 'hexagon']
     ];
 
-    function addShapeRow(shapeVal) {
+    // settings each shape row carries, and which shapes use each one
+    const SHAPE_DEFAULTS = { size: 60, width: 90, height: 50, corner: 0, tilt: 0 };
+    const SHAPE_FIELDS = [
+        { key: 'size',   label: 'size',           shapes: ['circle', 'triangle', 'square', 'pentagon', 'hexagon'], min: 1 },
+        { key: 'width',  label: 'width',          shapes: ['rectangle', 'oval'], min: 1 },
+        { key: 'height', label: 'height',         shapes: ['rectangle', 'oval'], min: 1 },
+        { key: 'corner', label: 'corner radius',  shapes: ['rectangle'], min: 0 },
+        { key: 'tilt',   label: 'tilt (degrees)', shapes: ['oval'] }
+    ];
+
+    // show only the settings that apply to this row's chosen shape
+    function updateRowFields(row) {
+        const shape = row.querySelector('select').value;
+        SHAPE_FIELDS.forEach((f) => {
+            row.querySelector(`label[data-key="${f.key}"]`).hidden = !f.shapes.includes(shape);
+        });
+    }
+
+    function updateShapeFields() {
+        shapeListEl.querySelectorAll('.shape-row').forEach(updateRowFields);
+    }
+
+    function addShapeRow(shapeVal, settings = {}) {
         const n = shapeListEl.children.length + 1;
+        const row = document.createElement('div');
+        row.className = 'shape-row';
+
         const label = document.createElement('label');
         label.className = 'gen-field';
         label.append(`shape ${n}`);
@@ -176,12 +201,45 @@
         });
         select.value = shapeVal || 'square';
         select.addEventListener('change', () => {
-            updateShapeFields();
+            updateRowFields(row);
             changed();
         });
         label.appendChild(select);
-        shapeListEl.appendChild(label);
+        row.appendChild(label);
+
+        SHAPE_FIELDS.forEach((f) => {
+            const field = document.createElement('label');
+            field.className = 'gen-field';
+            field.dataset.key = f.key;
+            field.append(f.label);
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.step = 'any';
+            input.dataset.key = f.key;
+            input.value = settings[f.key] ?? SHAPE_DEFAULTS[f.key];
+            field.appendChild(input);
+            row.appendChild(field);
+        });
+
+        shapeListEl.appendChild(row);
+        updateRowFields(row);
     }
+
+    // one { size, width, height, corner, tilt } object per shape row
+    const getShapeSettings = () => [...shapeListEl.querySelectorAll('.shape-row')].map((row) => {
+        const s = {};
+        SHAPE_FIELDS.forEach((f) => {
+            const v = parseFloat(row.querySelector(`input[data-key="${f.key}"]`).value);
+            s[f.key] = Number.isFinite(v) ? v : SHAPE_DEFAULTS[f.key];
+            if (f.min !== undefined) s[f.key] = Math.max(f.min, s[f.key]);
+        });
+        return s;
+    });
+
+    // settings for shape i of a template: its own, or the template's single set (older templates)
+    const settingsFor = (t, i) => (Array.isArray(t.shapeSettings) && t.shapeSettings[i]) || {
+        size: t.size, width: t.width, height: t.height, corner: t.corner, tilt: t.tilt
+    };
 
     function updateShapeButtons() {
         const n = shapeListEl.children.length;
@@ -189,11 +247,11 @@
         $('remove-shape-btn').disabled = n <= MIN_SHAPES_COUNT;
     }
 
-    function setShapeList(shapes) {
+    function setShapeList(shapes, settingsList = []) {
         shapeListEl.innerHTML = '';
         const list = shapes.slice(0, MAX_SHAPES_COUNT);
         while (list.length < MIN_SHAPES_COUNT) list.push('square');
-        list.forEach((s) => addShapeRow(s));
+        list.forEach((s, i) => addShapeRow(s, settingsList[i]));
         updateShapeButtons();
         updateShapeFields();
     }
@@ -437,14 +495,16 @@
         const onScreen = Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2]));
         c.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]);
 
-        const { size, sx, sy } = sc;
+        const cfg = item.cfg || sc;
+        const { sx, sy } = sc;
+        const size = cfg.size;
         const shape = item.shape || sc.shape || 'square';
         c.beginPath();
         if (shape === 'square') {
             c.rect(sx - size / 2, sy - size / 2, size, size);
         } else if (shape === 'rectangle') {
-            const w = sc.width, h = sc.height;
-            const r = Math.min(sc.corner, w / 2, h / 2);
+            const w = cfg.width, h = cfg.height;
+            const r = Math.min(cfg.corner, w / 2, h / 2);
             const x0 = sx - w / 2, y0 = sy - h / 2;
             if (r > 0) {
                 c.moveTo(x0 + r, y0);
@@ -457,7 +517,7 @@
                 c.rect(x0, y0, w, h);
             }
         } else if (shape === 'oval') {
-            c.ellipse(sx, sy, sc.width / 2, sc.height / 2, rad(sc.tilt), 0, Math.PI * 2);
+            c.ellipse(sx, sy, cfg.width / 2, cfg.height / 2, rad(cfg.tilt), 0, Math.PI * 2);
         } else if (shape === 'triangle') {
             c.moveTo(sx, sy + size * 0.577);
             c.lineTo(sx - size / 2, sy - size * 0.289);
@@ -483,10 +543,10 @@
         }
 
         if (sc.marker) {
-            const ref = (shape === 'rectangle' || shape === 'oval') ? Math.min(sc.width, sc.height) : size;
+            const ref = (shape === 'rectangle' || shape === 'oval') ? Math.min(cfg.width, cfg.height) : size;
             let ox = ref * 0.18, oy = ref * 0.12;
             if (shape === 'oval') {
-                const t = rad(sc.tilt), co = Math.cos(t), si = Math.sin(t);
+                const t = rad(cfg.tilt), co = Math.cos(t), si = Math.sin(t);
                 [ox, oy] = [ox * co - oy * si, ox * si + oy * co];
             }
             c.beginPath();
@@ -761,12 +821,8 @@
             capped = true;
         }
 
+        const cfgs = getShapeSettings();
         const next = {
-            size: Math.max(1, num('shape-size', 60)),
-            width: Math.max(1, num('shape-width', 90)),
-            height: Math.max(1, num('shape-height', 50)),
-            corner: Math.max(0, num('shape-corner', 0)),
-            tilt: num('shape-tilt', 0),
             border: $('show-border').checked,
             sx: num('shape-x', 0),
             sy: num('shape-y', 0),
@@ -792,23 +848,25 @@
         }
 
         const nShapes = shapes.length;
-        const shapeCycle = (k) => shapes[((k % nShapes) + nShapes) % nShapes];
 
         for (let r = 0; r < rows; r++) {
             const rowShift = translation(r * rowX + (r % 2 ? oddX : 0), r * rowY);
             for (let i = 0; i <= repeats; i++) {
                 const k = r * perRow + i;
-                let assignedShape = 'square';
+                // index of the shape row this item uses (its type and its own settings)
+                let si;
                 switch (shapeMode) {
-                    case 'row':          assignedShape = shapes[((r % nShapes) + nShapes) % nShapes]; break;
-                    case 'diagonal':     assignedShape = shapeCycle(i + r); break;
-                    case 'stripes-cols': assignedShape = shapeCycle(i); break;
-                    case 'stripes-rows': assignedShape = shapeCycle(r); break;
-                    case 'checker':      assignedShape = shapes[(i + r) % nShapes]; break;
-                    case 'pick':         assignedShape = shapes[Math.floor(scatter(k) * nShapes)]; break;
-                    default:             assignedShape = shapeCycle(i);
+                    case 'row':
+                    case 'stripes-rows': si = r % nShapes; break;
+                    case 'diagonal':
+                    case 'checker':      si = (i + r) % nShapes; break;
+                    case 'pick':         si = Math.floor(scatter(k) * nShapes); break;
+                    default:             si = i % nShapes;
                 }
-                next.items.push({ matrix: mul(rowShift, rowMatrices[i]), col: i, row: r, shape: assignedShape });
+                next.items.push({
+                    matrix: mul(rowShift, rowMatrices[i]), col: i, row: r,
+                    shape: shapes[si], cfg: cfgs[si]
+                });
             }
         }
         colorItems(next, colorMode, palette, repeats, rows);
@@ -1177,15 +1235,10 @@
         const t = findTemplate(id);
         if (!t) return;
 
-        setShapeList(normalizeShapes(t));
+        const tShapes = normalizeShapes(t);
+        setShapeList(tShapes, tShapes.map((_, i) => settingsFor(t, i)));
         setShapeMode(t.shapeMode || 'seq');
-        $('shape-size').value = t.size;
-        $('shape-width').value = t.width ?? initialFields['shape-width'];
-        $('shape-height').value = t.height ?? initialFields['shape-height'];
-        $('shape-corner').value = t.corner ?? initialFields['shape-corner'];
-        $('shape-tilt').value = t.tilt ?? initialFields['shape-tilt'];
         $('show-border').checked = t.border ?? true;
-        updateShapeFields();
         $('shape-x').value = t.x;
         $('shape-y').value = t.y;
         setPalette(normalizeColors(t));
@@ -1218,7 +1271,9 @@
         if (!Number.isFinite(own) || own < 1e-3 || own > 1e4) return null;
 
         const at = (x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]];
-        const { size, sx, sy } = sc;
+        const cfg = item.cfg || sc;
+        const { sx, sy } = sc;
+        const size = cfg.size;
         const shape = item.shape || 'square';
         const h = size / 2;
 
@@ -1231,14 +1286,14 @@
         if (shape === 'square') {
             corners = [[sx - h, sy - h], [sx + h, sy - h], [sx + h, sy + h], [sx - h, sy + h]];
         } else if (shape === 'rectangle') {
-            const hw = sc.width / 2, hh = sc.height / 2;
+            const hw = cfg.width / 2, hh = cfg.height / 2;
             corners = [[sx - hw, sy - hh], [sx + hw, sy - hh], [sx + hw, sy + hh], [sx - hw, sy + hh]];
         } else if (shape === 'oval') {
-            const t = rad(sc.tilt), co = Math.cos(t), si = Math.sin(t);
+            const t = rad(cfg.tilt), co = Math.cos(t), si = Math.sin(t);
             corners = [];
             for (let k = 0; k < 48; k++) {
                 const a = (k / 48) * Math.PI * 2;
-                const ex = (sc.width / 2) * Math.cos(a), ey = (sc.height / 2) * Math.sin(a);
+                const ex = (cfg.width / 2) * Math.cos(a), ey = (cfg.height / 2) * Math.sin(a);
                 corners.push([sx + ex * co - ey * si, sy + ex * si + ey * co]);
             }
         } else if (shape === 'hexagon' || shape === 'pentagon') {
@@ -1428,14 +1483,13 @@
             const v = parseFloat($(id).value);
             return Number.isFinite(v) ? v : fallback;
         };
+        const shapeSettings = getShapeSettings();
         return {
             shapes: getShapeList(),
             shapeMode: $('shape-mode').value,
-            size: n('shape-size', 60),
-            width: n('shape-width', 90),
-            height: n('shape-height', 50),
-            corner: n('shape-corner', 0),
-            tilt: n('shape-tilt', 0),
+            shapeSettings,
+            // the first shape's settings, kept for templates that predate per-shape settings
+            ...shapeSettings[0],
             border: $('show-border').checked,
             x: n('shape-x', 0),
             y: n('shape-y', 0),
@@ -1579,7 +1633,7 @@
         },
         {
             title: '1. mix shapes & pick patterns',
-            text: 'add multiple shapes to your shape list (circles, ovals, triangles, squares, rectangles, pentagons, hexagons) and use the "shape by" menu to control how they cycle or pop up across rows, columns, diagonals, or random picks. set their size, start position, and specific dimensions for ovals or rectangles.',
+            text: 'add multiple shapes to your shape list (circles, ovals, triangles, squares, rectangles, pentagons, hexagons) and use the "shape by" menu to control how they cycle or pop up across rows, columns, diagonals, or random picks. each shape has its own size (or width, height, corner radius and tilt for rectangles and ovals) directly beneath it, and the start position applies to the whole pattern.',
             tip: 'turn on the direction dot to see how shapes flip or turn.'
         },
         {
@@ -1700,15 +1754,6 @@
         initialFields[id] = el.type === 'checkbox' ? el.checked : el.value;
     });
 
-    function updateShapeFields() {
-        const shapes = getShapeList();
-        document.querySelectorAll('.generator-controls [data-shapes]').forEach((el) => {
-            const targetShapes = el.dataset.shapes.split(' ');
-            const matches = shapes.some((s) => targetShapes.includes(s));
-            el.hidden = !matches;
-        });
-    }
-
     function updateSaveBgState() {
         $('save-bg-color').disabled = $('transparent-bg').checked;
     }
@@ -1733,11 +1778,6 @@
     function resetShapes() {
         setShapeList(DEFAULT_SHAPES);
         setShapeMode('seq');
-        $('shape-size').value = 60;
-        $('shape-width').value = 90;
-        $('shape-height').value = 50;
-        $('shape-corner').value = 0;
-        $('shape-tilt').value = 0;
         $('shape-x').value = -250;
         $('shape-y').value = 0;
         $('show-border').checked = true;

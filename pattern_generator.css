@@ -84,6 +84,23 @@ body {
     font-size: 0.9rem;
 }
 
+/* one shape in the shape list: its select, with that shape's own settings directly beneath */
+.shape-row {
+    margin-bottom: 8px;
+    padding: 6px 8px 2px;
+    background: white;
+    border: 2px solid var(--pink);
+    border-radius: 8px;
+}
+
+.shape-row > .gen-field:first-child {
+    color: var(--deep-pink);
+}
+
+.shape-row > .gen-field:not(:first-child) {
+    padding-left: 10px;
+}
+
 .gen-check {
     display: block;
     margin-bottom: 4px;
